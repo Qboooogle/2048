@@ -1,5 +1,5 @@
 #include "HelloWorldScene.h"
-
+#include "OverScene.h"
 USING_NS_CC;
 
 Scene* HelloWorld::createScene()
@@ -84,6 +84,12 @@ bool HelloWorld::init()
             if (isMove) {
                 HelloWorld::newNumber();
             }
+            if (allNumber.size()==16) {
+                if (GameOver()) {
+                    CCLOG("你死了");
+                    HelloWorld::Gover();
+                }
+            }
         }
     };
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(event, this);
@@ -138,6 +144,7 @@ void HelloWorld::moveLeft(){
                         allNumber.at(map[h-1][j]-1)->moveTo(row[h-1], col[j]);
                         isMove=true;
                     }else{
+                        
                         int numObj=allNumber.at(map[h-1][j]-1)->type;
                         int numNow=allNumber.at(map[h][j]-1)->type;
                         if (numNow==numObj) {
@@ -270,6 +277,33 @@ void HelloWorld::moveDown(){
         }
     }
 }
+
+bool HelloWorld::GameOver(){
+    bool flag=true;
+    for (int i = 0; i<4; i++) {
+        for (int j = 0; j<4; j++) {
+            if (i<3&&allNumber.at(map[i][j]-1)->type==allNumber.at(map[i+1][j]-1)->type) {
+                flag=false;
+            }
+            if (i>0&&allNumber.at(map[i][j]-1)->type==allNumber.at(map[i-1][j]-1)->type) {
+                flag=false;
+            }
+            if (j>0&&allNumber.at(map[i][j]-1)->type==allNumber.at(map[i][j-1]-1)->type) {
+                flag=false;
+            }
+            if (j<3&&allNumber.at(map[i][j]-1)->type==allNumber.at(map[i][j+1]-1)->type) {
+                flag=false;
+            }
+        }
+    }
+    return flag;
+}
+
+void HelloWorld::Gover(){
+    auto scene =OverScene::createScene();
+    Director::getInstance()->replaceScene(TransitionCrossFade::create(1, scene));
+}
+
 
 
 

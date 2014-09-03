@@ -20,10 +20,12 @@ public:
     virtual bool init();
     Vector<Number *> allNumber;
     bool isMove;
+    bool GameOver();
     void moveUp();
     void moveLeft();
     void moveDown();
     void moveRight();
+    void Gover();
     int map[4][4];
     void newNumber();
     // implement the "static create()" method manually
